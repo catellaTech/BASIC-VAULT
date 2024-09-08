@@ -2,9 +2,9 @@
 pragma solidity 0.8.19;
 
 import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import {console} from "forge-std/console.sol";
 
 /**
- * https://github.com/yieldprotocol/mentorship2022/issues/2
  * @title Basic Vault 
  * @author catellaTech
  * @notice This contract allows for deposits and withdrawals 
@@ -32,7 +32,9 @@ contract Vault {
     @param amount the amount to deposit
      */
     function deposit(uint256 amount) external {
+        console.log("Updating the mapping balances..");
         vaultBalances[msg.sender] = vaultBalances[msg.sender] + amount;
+        console.log("Transfering the tokens into the Vault smart contract");
         (bool success) = token.transferFrom(msg.sender, address(this), amount);
         require(success,"Deposit failed");
         emit Deposited(msg.sender, amount);
